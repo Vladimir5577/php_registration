@@ -1,0 +1,30 @@
+{% extends 'layouts/main.html.twig' %}
+
+{% block body %}
+
+<h1>Registration Page</h1>
+
+<form action="/form_submit" method="POST" onsubmit="" >
+	<input type="hidden" id="csrf" name="csrf" value="{{ csrf }}">
+	<div class="mb-3">
+		<label for="email" class="form-label">Email address</label>
+		<input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp">
+		<p id="email_error" style="color: red;"></p>
+		<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+	</div>
+	<div class="mb-3">
+		<label for="password" class="form-label">Password</label>
+		<input type="password" name="password" class="form-control" id="password">
+		<p id="password_error" style="color: red;"></p>
+	</div>
+	<p>Type text from the picture</p>
+	<img src="{{ captcha.inline() }}" id="captcha_image">
+	<input type="text" id="captcha" name="captcha">
+	<button id="change_captcha">Change picture</button>
+	<p id="captcha_error" style="color: red;"></p>
+	<br>
+	<br>
+	<button type="submit" class="btn btn-primary" id="form_register">Submit</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,6 @@
+/vendor/
+/var/
+/public/captcha.jpg
+public/captcha.jpg
+/node_modules/
+.env
