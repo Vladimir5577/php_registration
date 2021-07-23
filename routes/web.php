@@ -20,3 +20,9 @@ $routes->add('reset_captcha', new Route('/reset_captcha', array('controller' => 
 
 // user home page
 $routes->add('home_page', new Route('/home_page', array('controller' => 'UserController', 'method' => 'homePage')));
+
+// edit profile
+$routes->add('edit_profile', new Route('/edit_profile', array('controller' => 'UserController', 'method' => 'editProfile')));
+
+// save user data
+$routes->add('save_user_data', new Route('/save_user_data', array('controller' => 'UserController', 'method' => 'saveUserData')));
