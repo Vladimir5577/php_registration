@@ -2,8 +2,10 @@
 
 namespace App\Controllers;
 
-use App\Models\Product;
-
+/**
+ * Class PageController
+ * @package App\Controllers
+ */
 class PageController
 {
     // Homepage action

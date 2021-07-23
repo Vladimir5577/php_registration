@@ -7,11 +7,16 @@ use App\Models\User;
 
 use Josantonius\Session\Session;
 
-
 class ProductController extends Controller
 {
 
-	public function showAction(int $id)
+    /**
+     * @param int $id
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function showAction(int $id)
 	{
 
 

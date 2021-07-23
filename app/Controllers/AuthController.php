@@ -5,27 +5,32 @@ namespace App\Controllers;
 use Josantonius\Session\Session;
 use Phpass\Hash;
 use App\Models\User;
-
 use App\Traits\Tocken;
 use App\Traits\Captcha;
 use App\Services\AuthService;
-
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 
+/**
+ * Class AuthController
+ * @package App\Controllers
+ */
 class AuthController extends Controller
 {
     use Tocken, Captcha;
 
-
+    /**
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
 	public function getForm()
 	{
 
-        $package = new Package(new EmptyVersionStrategy());
+//        $package = new Package(new EmptyVersionStrategy());
         // dd(APP_ROOT);
         // $package->getUrl('uploads/images/ava_default.jpeg');
-        echo '<img src="/uploads/images/ava_default.jpeg">';
-        dd($package->getUrl('image.png'));
+//        dd($package->getUrl('image.png'));
 
         // https://github.com/rchouinard/phpass
         // $adapter = new \Phpass\Hash\Adapter\Pbkdf2(array (
@@ -69,7 +74,6 @@ class AuthController extends Controller
 
         $auhtService = new AuthService;
         $auhtService->saveUserToDatabase();
-        
     }
 
     public function resetCaptcha()

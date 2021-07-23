@@ -11,14 +11,16 @@ trait Tocken {
 
 	public function generateTocken($userId): string
 	{
-		// $userId = 'new_user';
-        // $secret = self::SECRET;
+
         $expiration = time() + 3600;
-        // $issuer = 'localhost';
 
         return Token::create($userId, self::$SECRET, $expiration, self::$ISSUER);
 	}
 
+    /**
+     * @param $tocken
+     * @return bool
+     */
 	public function validateTocken($tocken)
 	{
 		if (Token::validate($tocken, self::$SECRET)) {     
@@ -27,5 +29,4 @@ trait Tocken {
         	return false;
         }
 	}
-
 }

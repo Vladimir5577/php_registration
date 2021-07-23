@@ -5,6 +5,10 @@ namespace App\Controllers;
 use App\Models\User;
 use Josantonius\Session\Session;
 
+/**
+ * Class UserController
+ * @package App\Controllers
+ */
 class UserController extends Controller
 {
 	public function homePage()

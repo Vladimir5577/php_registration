@@ -3,6 +3,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
+/**
+ * @method static where(string $string, $email)
+ */
 class User extends Eloquent
 {
    /**
@@ -18,6 +21,9 @@ class User extends Eloquent
        'photo',
    ];
 
+    /**
+     * @var bool
+     */
    public $timestamps = false;
 
  }
