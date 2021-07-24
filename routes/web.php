@@ -3,9 +3,13 @@
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
+
+
+
 // Routes system
 $routes = new RouteCollection();
-$routes->add('homepage', new Route('/', array('controller' => 'PageController', 'method'=>'indexAction'), array()));
+$routes->add('homepage', new Route('/', array('controller' => 'PageController', 'method'=>'indexAction'), array('id' => '[0-9]+')));
+
 $routes->add('product', new Route('/product/{id}', array('controller' => 'ProductController', 'method'=>'showAction'), array('id' => '[0-9]+')));
 
 
@@ -24,5 +28,6 @@ $routes->add('home_page', new Route('/home_page', array('controller' => 'UserCon
 // edit profile
 $routes->add('edit_profile', new Route('/edit_profile', array('controller' => 'UserController', 'method' => 'editProfile')));
 
-// save user data
+// save personal user data
 $routes->add('save_user_data', new Route('/save_user_data', array('controller' => 'UserController', 'method' => 'saveUserData')));
+
