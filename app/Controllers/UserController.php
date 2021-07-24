@@ -17,50 +17,54 @@ class UserController extends Controller
 
 	public function homePage()
 	{
-		// dd(Session::get('auth_user_id'));
+		// dd(Session::id());
 
 		$auth_user_id = Session::get('auth_user_id');
+		$user = User::find($auth_user_id);
+		// dd($user);
 
-		// if ($auth_user_id) {
-			$user = User::find($auth_user_id);
+		if ($user) {
 			echo $this->twig->render('pages/users/user_home.html.twig', [
 				'user' => $user,
-			]);  
-		// }
+				'update_success' => Session::pull('update_success'),
+			]);
 
-		// dd('not autn');
-     	// echo $this->twig->render('pages/users/user_home.html.twig');   
+			return;  
+		}
+
+		 return header("Location: /register");
 	}
 
 	public function editProfile()
 	{
-		// $user = User::find(Session::get('auth_user_id'));
+		$user = User::find(Session::get('auth_user_id'));
 
 		$csrf = $this->generateTocken('user_form');
 
-		echo $this->twig->render('pages/users/edit_profile.html.twig', [
-			// 'user' => $user,
-			'csrf' => $csrf,
-			'error_name' => Session::pull('error_name'),
-			'error_image' => Session::pull('error_image'),
-			'error_csrf' => Session::pull('error_csrf'),
-			'update_failed' => Session::pull('update_failed'),
-			'update_success' => Session::pull('update_success'),
-		]);
+		if ($user) {
+			echo $this->twig->render('pages/users/edit_profile.html.twig', [
+				'user' => $user,
+				'csrf' => $csrf,
+				'error_name' => Session::pull('error_name'),
+				'error_image' => Session::pull('error_image'),
+				'error_csrf' => Session::pull('error_csrf'),
+				'update_failed' => Session::pull('update_failed'),
+				'update_success' => Session::pull('update_success'),
+			]);
+			return;
+		}
+		
 
-
+		return header("Location: /register");
 	}
 
 	public function saveUserData()
 	{
-		// dd($_FILES["file-input"]["name"]);
-
 		// validate csrf
 		if (!$this->validateTocken($_POST['csrf'])) {
             Session::set('error_csrf', '419 Page has been expired! Please refresh the page!');
 	    	return header("Location: /edit_profile");
         } 
-
 	    
 	    $allowed_image_extension = array("png", "jpg","jpeg");
 	    
@@ -103,13 +107,12 @@ class UserController extends Controller
         	$user->save();
 
         	Session::set('update_success', 'Profile updated successfully.');
-	        return header("Location: /edit_profile");
+	        return header("Location: /home_page");
         } else {
             // image upload failed
             Session::set('update_failed', 'Profile not updated');
 	        return header("Location: /edit_profile");
         }
-	    
 
 		dd('Finish');
 	}

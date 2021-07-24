@@ -2,18 +2,30 @@
 
 {% block body %}
 
-
+{% if update_success %}
+    <h1 style="color: green;">{{ update_success }}</h1>
+{% endif %}
 
 <div class="row">
     <div class="col-12">
     	<h1>Home Page</h1>
-        <h3 style="color: red;">To became an active please add your name and photo</h3>
+        {% if not user.name and not user.photo %}
+            <h3 style="color: red;">For the next step add name and photo.</h3>
+        {% endif %}
+
+        {% if user.name and user.photo and not user.is_active%}
+            <h3 style="color: red;">To became an active confirm your email.</h3>
+            <a href="#">
+                <button type="button" class="btn btn-info">Send email</button>
+            </a>
+        {% endif %}
+
 	</div>
 
     <div class="col-3">
 
         {% if user.photo %}
-            <h1>234</h1>
+            <img src="/uploads/images/{{ user.photo }}">
         {% else %}
             <img src="/uploads/images/ava_default.jpeg">
         {% endif %}
@@ -27,7 +39,8 @@
 
     <div class="col-8">
         
-    	<h3>Email: </h3>
+    	<h3>Email: {{ user.email }}</h3>
+        <h3>Name: {{ user.name }}</h3>
 
     </div>
  </div>

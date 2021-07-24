@@ -58,6 +58,7 @@ class AuthService implements AuthInterface
         $user->email = $_POST['email'];
         $user->password = $passwordHash;
         $user->key = rand(100000,999999);
+        $user->registered_at = date('Y-m-d');
 
         $user->save();
 

@@ -26,7 +26,6 @@ class AuthController extends Controller
      */
 	public function getForm()
 	{
-
 //        $package = new Package(new EmptyVersionStrategy());
         // dd(APP_ROOT);
         // $package->getUrl('uploads/images/ava_default.jpeg');
@@ -61,7 +60,6 @@ class AuthController extends Controller
 
     public function formRegister()
     {
-
         // header('Access-Control-Allow-Origin: *');
         // header('Access-Control-Allow-Methods: GET, POST');
         // header("Access-Control-Allow-Headers: *");

@@ -122,7 +122,7 @@ function axiosPost (bodyFormData) {
         if (response.data.auth == true) {
             localStorage.setItem('tocken', response.data.tocken);
             localStorage.setItem('auth_user_id', response.data.auth_user_id);
-            // window.location.href = "http://localhost:8000";
+            window.location.href = "http://localhost:8000/home_page";
         }
 
     })
