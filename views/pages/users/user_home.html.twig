@@ -14,10 +14,11 @@
         {% endif %}
 
         {% if user.name and user.photo and not user.is_active%}
-            <h3 style="color: red;">To became an active confirm your email.</h3>
+            <h3 style="color: red;">To became an active user confirm your email.</h3>
             <a href="#">
-                <button type="button" class="btn btn-info">Send email</button>
+                <button type="button" class="btn btn-danger">Send email</button>
             </a>
+            <br><br>
         {% endif %}
 
 	</div>

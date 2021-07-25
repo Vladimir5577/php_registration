@@ -74,6 +74,32 @@ class AuthController extends Controller
         $auhtService->saveUserToDatabase();
     }
 
+    public function login()
+    {
+        $csrf = $this->generateTocken('login');
+
+        echo $this->twig->render('pages/auth/login.html.twig', [
+            'csrf' => $csrf,
+            'email' => Session::pull('email'),
+            'error_csrf' => Session::pull('error_csrf'),
+            'error_login' => Session::pull('error_login'),
+            'error_email' => Session::pull('error_email'),
+            'error_password' => Session::pull('error_password'),
+        ]);
+    }
+
+    public function loginSubmit()
+    {
+        // validate csrf
+        if (!$this->validateTocken($_POST['csrf'])) {
+            Session::set('error_csrf', '419 Page has been expired! Please refresh the page!');
+            return header("Location: /login");
+        }
+
+        $auhtService = new AuthService;
+        $auhtService->loginUser();
+    }
+
     public function resetCaptcha()
     {
         $this->saveNevCaptchaToFileAndSession();

@@ -16,7 +16,13 @@ $routes->add('product', new Route('/product/{id}', array('controller' => 'Produc
 // register page
 $routes->add('register', new Route('/register', array('controller' => 'AuthController', 'method' => 'getForm')));
 
-// form submit
+// login page
+$routes->add('login', new Route('/login', array('controller' => 'AuthController', 'method' => 'login')));
+
+// submit login page
+$routes->add('login_submit', new Route('/login_submit', array('controller' => 'AuthController', 'method' => 'loginSubmit')));
+
+// register form submit
 $routes->add('form_submit', new Route('/form_submit', array('controller' => 'AuthController', 'method' => 'formRegister')));
 
 // reset captcha

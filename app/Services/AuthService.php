@@ -7,6 +7,8 @@ use Valitron\Validator;
 use App\Traits\Tocken;
 use Josantonius\Session\Session;
 use App\Interfaces\AuthInterface;
+use Phpass\Hash;
+use Phpass\Hash\Adapter\Pbkdf2;
 
 class AuthService implements AuthInterface
 {
@@ -48,10 +50,10 @@ class AuthService implements AuthInterface
         }
 
         // hash password
-        $adapter = new \Phpass\Hash\Adapter\Pbkdf2(array (
+        $adapter = new Pbkdf2(array (
             'iterationCount' => 15000
         ));
-        $phpassHash = new \Phpass\Hash($adapter);
+        $phpassHash = new Hash($adapter);
         $passwordHash = $phpassHash->hashPassword($_POST['password']);
 
         $user = new User();
@@ -73,4 +75,65 @@ class AuthService implements AuthInterface
         ]);
 
 	}
+
+    public function loginUser()
+    {
+        $this->validateLoginForm();
+    }
+
+    public function validateLoginForm()
+    {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        Session::set('email', $email);
+
+        $_POST['captcha_session'] = Session::get('captcha');
+
+        $v = new Validator($_POST);
+        $v->rule('required', ['email', 'password']);
+        $v->rule('email', 'email');
+
+        if($v->validate()) {
+            $this->tryLoginWithValidUserCredentials($email, $password);
+        } else {
+            $errors = $v->errors();
+
+            if (array_key_exists('email', $errors)) {
+                Session::set('error_email', $errors['email'][0]);
+            }
+
+            if (array_key_exists('password', $errors)) {
+                Session::set('error_password', $errors['password'][0]);
+            }
+
+            return header("Location: /login");
+        }
+    }
+
+    public function tryLoginWithValidUserCredentials($email, $password)
+    {
+        $user = User::whereEmail($email)->first();
+        
+        if (!$user) {
+            Session::set('error_login', 'Wrong credentials');
+            return header("Location: /login");
+        }
+
+        $adapter = new Pbkdf2(array (
+            'iterationCount' => 15000
+        ));
+        $phpassHash = new Hash($adapter);
+
+        if ($phpassHash->checkPassword($password, $user->password)) {
+            // Password matches...
+            Session::set('auth_user_id', $user->id);
+            $tocken = $this->generateTocken($user_id);
+            return header("Location: /home_page");
+        } else {
+            // wrong password
+            Session::set('error_login', 'Wrong credentials');
+            return header("Location: /login");
+        }
+    }
 }
