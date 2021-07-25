@@ -37,3 +37,11 @@ $routes->add('edit_profile', new Route('/edit_profile', array('controller' => 'U
 // save personal user data
 $routes->add('save_user_data', new Route('/save_user_data', array('controller' => 'UserController', 'method' => 'saveUserData')));
 
+// send email
+$routes->add('send_email', new Route('/send_email', array('controller' => 'AuthController', 'method' => 'sendEmail')));
+
+// confirm email
+$routes->add('confirm_email', new Route('/confirm_email', array('controller' => 'AuthController', 'method' => 'confirmEmail')));
+
+// confirm email
+$routes->add('logout', new Route('/logout', array('controller' => 'AuthController', 'method' => 'logout')));

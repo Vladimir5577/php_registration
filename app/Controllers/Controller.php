@@ -16,9 +16,9 @@ class Controller
     protected $session;
 
     public function __construct() {
+        $this->sessionStart();
     	$this->twig = $this->twigTemplate();
     	$this->captcha = $this->createCaptcha();
-        $this->sessionStart();
     }
 
     public function twigTemplate()
@@ -37,7 +37,7 @@ class Controller
 		   		'cache' => $cache,
 			]
 		);
-    	
+        $twig->addGlobal('session', $_SESSION);
     	return $twig;
     }
 

@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Traits\Tocken;
 use App\Traits\Captcha;
 use App\Services\AuthService;
+use App\Services\MailService;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 
@@ -105,5 +106,33 @@ class AuthController extends Controller
         $this->saveNevCaptchaToFileAndSession();
 
         echo $this->captcha->inline();
+    }
+
+    public function confirmEmail()
+    {
+        $csrf = $this->generateTocken('confirm_email');
+
+        echo $this->twig->render('pages/auth/code_verification.html.twig', [
+            'csrf' => $csrf,
+            'email_sended_failed' => Session::pull('email_sended_failed'),
+            'email_sended_success' => Session::pull('email_sended_success'),
+        ]);
+    }
+
+    public function sendEmail()
+    {
+        $mailService = new MailService;
+        $mailService->sendEmailVerification();
+    }
+
+    public function logout()
+    {
+        Session::destroy();
+
+        $csrf = $this->generateTocken('login');
+
+        echo $this->twig->render('pages/auth/login.html.twig', [
+            'csrf' => $csrf,
+        ]);
     }
 }

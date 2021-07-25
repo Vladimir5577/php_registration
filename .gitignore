@@ -5,3 +5,4 @@ public/captcha.jpg
 /node_modules/
 .env
 /.edea/
+/public/uploads/images/

@@ -4,9 +4,18 @@
   </a>
 
   <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-    <a class="me-3 py-2 text-dark text-decoration-none" href="#">Features</a>
-    <a class="me-3 py-2 text-dark text-decoration-none" href="#">Enterprise</a>
-    <a class="me-3 py-2 text-dark text-decoration-none" href="#">Support</a>
-    <a class="py-2 text-dark text-decoration-none" href="#">Pricing</a>
+    {% if not session.jst_auth_user_id %}
+      <a class="py-2 text-dark text-decoration-none" href="/login">
+        <button type="button" class="btn btn-primary">Login</button>
+      </a>
+      &nbsp;&nbsp;
+      <a class="py-2 text-dark text-decoration-none" href="/register">
+        <button type="button" class="btn btn-success">Register</button>
+      </a>
+    {% else %}
+      <a class="py-2 text-dark text-decoration-none" href="/logout">
+        <button type="button" class="btn btn-danger">Logout</button>
+      </a>
+    {% endif %}
   </nav>
 </div>

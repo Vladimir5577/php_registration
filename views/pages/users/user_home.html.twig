@@ -15,7 +15,7 @@
 
         {% if user.name and user.photo and not user.is_active%}
             <h3 style="color: red;">To became an active user confirm your email.</h3>
-            <a href="#">
+            <a href="/send_email">
                 <button type="button" class="btn btn-danger">Send email</button>
             </a>
             <br><br>

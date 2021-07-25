@@ -21,6 +21,10 @@ define('DB_USER', $_ENV['DB_USERNAME']);
 define('DB_PASS', $_ENV['DB_PASSWORD']);
 define('DB_NAME', $_ENV['DB_DATABASE']);
 
+// gmail credentials
+define('GMAIL_ADDRESS', $_ENV['GMAIL_ADDRESS']);
+define('GMAIL_PASSWORD', $_ENV['GMAIL_PASSWORD']);
+
 
 // connect to database
 $capsule = new Capsule;

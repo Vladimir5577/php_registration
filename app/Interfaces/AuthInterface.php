@@ -10,4 +10,12 @@ interface AuthInterface
 
     public function saveValidUserData();
 
+
+    public function loginUser();
+    
+    public function validateLoginForm();
+    
+    public function tryLoginWithValidUserCredentials($email, $password);
+    
+
 }

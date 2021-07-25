@@ -14,6 +14,11 @@ class PageController
     // Homepage action
 	public function indexAction()
 	{
+/*
+		$code_verification = rand(1000, 9999);
+		Session::set('code_verification', $code_verification):
+
+		dd($code_verification);
 
 		$mail = new PHPMailer();
 		$mail->IsSMTP();
@@ -24,17 +29,15 @@ class PageController
 		$mail->SMTPSecure = "tls";
 		$mail->Port       = 587;
 		$mail->Host       = "smtp.gmail.com";
-		$mail->Username   = "chesheva0312@gmail.com";
-		$mail->Password   = "03127777";
+		$mail->Username   = GMAIL_ADDRESS;
+		$mail->Password   = GMAIL_PASSWORD;
 
 		$mail->IsHTML(true);
 		$mail->AddAddress("vladimir160933@gmail.com");
-		$mail->SetFrom("chesheva0312@gmail.com", 'PHP-developer');
-		// $mail->AddReplyTo("vladimir160933@gmail.com", "reply-to-name");
-		// $mail->AddCC("vladimir160933@gmail.com", "cc-recipient-name");
-		$mail->Subject = "Test is Test Email sent via Gmail SMTP Server using PHP Mailer";
-		$content = "<b>This is a Test Email sent via Gmail SMTP Server using PHP mailer class.</b>";
+		$mail->SetFrom(GMAIL_ADDRESS, 'PHP-developer');
 
+		$mail->Subject = "Confirm your registration with a code.";
+		$content = "<b>Secret code: .</b>";
 
 		$mail->MsgHTML($content); 
 		if(!$mail->Send()) {
@@ -43,7 +46,7 @@ class PageController
 		} else {
 		  echo "Email sent successfully";
 		}
-
+*/
 		dd('Finesh');
         require_once APP_ROOT . '/views/home.php';
 	}
