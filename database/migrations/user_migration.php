@@ -10,7 +10,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
  */
 class UserMigration
 {
-    public function __invoke()
+    public function run()
     {
         Capsule::schema()->create('users', function ($table) {
             $table->increments('id');
@@ -24,5 +24,8 @@ class UserMigration
         });
     }
 }
+
+$UserMigration = new UserMigration;
+$UserMigration->run();
 
 dump('Table user created cuccessfully!');

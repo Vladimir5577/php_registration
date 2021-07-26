@@ -1,6 +1,6 @@
 ## PHP Registration
 
-Install project
+## Installation
 
 ```bash
 composer install
@@ -35,6 +35,8 @@ Then type in the browser
 ```bash 
 localhost:8000
 ```
+
+## Work with api
 
 In postman login with post request with email and password
 
