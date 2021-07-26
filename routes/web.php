@@ -4,13 +4,11 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 
-
-
 // Routes system
 $routes = new RouteCollection();
-$routes->add('homepage', new Route('/', array('controller' => 'PageController', 'method'=>'indexAction'), array('id' => '[0-9]+')));
 
-$routes->add('product', new Route('/product/{id}', array('controller' => 'ProductController', 'method'=>'showAction'), array('id' => '[0-9]+')));
+// user home page
+$routes->add('index', new Route('/', array('controller' => 'UserController', 'method' => 'index')));
 
 
 // register page
@@ -43,5 +41,21 @@ $routes->add('send_email', new Route('/send_email', array('controller' => 'AuthC
 // confirm email
 $routes->add('confirm_email', new Route('/confirm_email', array('controller' => 'AuthController', 'method' => 'confirmEmail')));
 
+// code verify
+$routes->add('code_verify', new Route('/code_verify', array('controller' => 'AuthController', 'method' => 'codeVerify')));
+
+// get users
+$routes->add('get_users', new Route('/get_users', array('controller' => 'UserController', 'method' => 'getUsers')));
+
+// get users by sort
+$routes->add('get_users_by_sort', new Route('/get_users_by_sort', array('controller' => 'UserController', 'method' => 'getUsersBySort')));
+
 // confirm email
 $routes->add('logout', new Route('/logout', array('controller' => 'AuthController', 'method' => 'logout')));
+
+
+// api login route
+$routes->add('api/login', new Route('/api/login', array('controller' => 'Api\AuthApiController', 'method' => 'login')));
+
+// api get users
+$routes->add('api/get_users', new Route('/api/get_users', array('controller' => 'Api\AuthApiController', 'method' => 'getUsers')));

@@ -1,0 +1,44 @@
+{% extends 'layouts/main.html.twig' %}
+
+{% block body %}
+
+<h1>All active users</h1>
+
+<h4>Order by:</h4>
+<form action="/get_users_by_sort" method="POST">
+    <div class="row">
+        <div class="col-3">
+            <select name="order_by" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                <option value="name_asc" selected>Name &#8593;</option>
+                <option value="name_desc">Name &#8595;</option>
+                <option value="email_asc">Email &#8593;</option>
+                <option value="email_desc">Email &#8595;</option>
+            </select>
+        </div>
+
+        <div class="col-5">
+            <input type="submit" class="btn btn-primary" value="Submit">
+        </div>
+    </div>
+</form>
+
+{% for user in users %}
+    <div class="row">
+        <div class="col-3">
+            {% if user.photo %}
+                <img src="/uploads/images/{{ user.photo }}" style="width: 300px;">
+            {% else %}
+                <img src="/uploads/images/ava_default.jpeg">
+            {% endif %}
+        </div>
+
+        <div class="col-8">   
+            <h3>Email: {{ user.email }}</h3>
+            <h3>Name: {{ user.name }}</h3>
+            <h3>Personal key: {{ user.key }}</h3>
+            <h3>Registered at: {{ user.registered_at }}</h3>
+        </div>
+    </div>
+{% endfor %}
+
+{% endblock %}

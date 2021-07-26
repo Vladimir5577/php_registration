@@ -19,6 +19,8 @@ class User extends Eloquent
        'key', 
        'name', 
        'photo',
+       'is_active',
+       'registered_at'
    ];
 
     /**

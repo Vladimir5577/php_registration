@@ -4,14 +4,21 @@ namespace App\Traits;
 
 use ReallySimpleJWT\Token;
 
+/**
+ * Trait Tocken
+ * @package App\Traits
+ */
 trait Tocken {
 
 	private static $SECRET = 'sec!ReT423*&';
 	private static $ISSUER = 'localhost';
 
+    /**
+     * @param $userId
+     * @return string
+     */
 	public function generateTocken($userId): string
 	{
-
         $expiration = time() + 3600;
 
         return Token::create($userId, self::$SECRET, $expiration, self::$ISSUER);

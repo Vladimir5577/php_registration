@@ -7,6 +7,10 @@ use Josantonius\Session\Session;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+/**
+ * Class MailService
+ * @package App\Services
+ */
 class MailService
 {
 	public function sendEmailVerification()
@@ -15,11 +19,11 @@ class MailService
 		$user = User::find($auth_user_id);
 
 		if ($user) {
-			$this->dispatchEmailIfUserAuth();
+			$this->dispatchEmailIfUserAuth($user);
 		}
 	}
 
-	public function dispatchEmailIfUserAuth()
+	public function dispatchEmailIfUserAuth($user)
 	{
 		$code_verification = rand(1000, 9999);
 		Session::set('code_verification', $code_verification);
@@ -37,7 +41,7 @@ class MailService
 		$mail->Password   = GMAIL_PASSWORD;
 
 		$mail->IsHTML(true);
-		$mail->AddAddress("vladimir160933@gmail.com");
+		$mail->AddAddress($user->email);
 		$mail->SetFrom(GMAIL_ADDRESS, 'PHP-developer');
 
 		$mail->Subject = 'Confirm your registration with a code.';

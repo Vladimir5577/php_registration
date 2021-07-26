@@ -2,15 +2,11 @@
 
 namespace App\Controllers;
 
-use Josantonius\Session\Session;
-use Phpass\Hash;
-use App\Models\User;
 use App\Traits\Tocken;
 use App\Traits\Captcha;
 use App\Services\AuthService;
 use App\Services\MailService;
-use Symfony\Component\Asset\Package;
-use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
+use Josantonius\Session\Session;
 
 /**
  * Class AuthController
@@ -27,29 +23,6 @@ class AuthController extends Controller
      */
 	public function getForm()
 	{
-//        $package = new Package(new EmptyVersionStrategy());
-        // dd(APP_ROOT);
-        // $package->getUrl('uploads/images/ava_default.jpeg');
-//        dd($package->getUrl('image.png'));
-
-        // https://github.com/rchouinard/phpass
-        // $adapter = new \Phpass\Hash\Adapter\Pbkdf2(array (
-        //     'iterationCount' => 15000
-        // ));
-        // $phpassHash = new \Phpass\Hash($adapter);
-
-//        $passwordHash = $phpassHash->hashPassword('123');
-
-//        dd($passwordHash);
-
-        // if ($phpassHash->checkPassword('123', '$p5v2$ARPPHWdg/$6XNdVvnvxOopGnu4WsmGTFeD82UWK7Hd')) {
-        //     // Password matches...
-        //     dump('Match');
-        // } else {
-        //     // Password doesn't match...
-        //     dump('Not');
-        // }
-
         $csrf = $this->generateTocken('new_user');
         $this->saveNevCaptchaToFileAndSession();
 
@@ -75,6 +48,11 @@ class AuthController extends Controller
         $auhtService->saveUserToDatabase();
     }
 
+    /**
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function login()
     {
         $csrf = $this->generateTocken('login');
@@ -114,8 +92,9 @@ class AuthController extends Controller
 
         echo $this->twig->render('pages/auth/code_verification.html.twig', [
             'csrf' => $csrf,
-            'email_sended_failed' => Session::pull('email_sended_failed'),
+            'error_csrf' => Session::pull('error_csrf'),
             'email_sended_success' => Session::pull('email_sended_success'),
+            'email_confirmed_failed' => Session::pull('email_confirmed_failed'),
         ]);
     }
 
@@ -125,14 +104,29 @@ class AuthController extends Controller
         $mailService->sendEmailVerification();
     }
 
+    public function codeVerify()
+    {
+        // validate csrf
+        if (!$this->validateTocken($_POST['csrf'])) {
+            Session::set('error_csrf', '419 Page has been expired! Please refresh the page!');
+            return header("Location: /confirm_email");
+        }
+
+        if (Session::get('code_verification') == intval($_POST['code_verification'])) {
+            // verification cod is correct
+            $auhtService = new AuthService;
+            $auhtService->emailHasBeenConfirmedMakeUserActive();
+        } else {
+            // wrond cod 
+            Session::set('email_confirmed_failed', 'Wrond code. Try again.');
+            return header("Location: /confirm_email");
+        }
+    }
+
     public function logout()
     {
         Session::destroy();
 
-        $csrf = $this->generateTocken('login');
-
-        echo $this->twig->render('pages/auth/login.html.twig', [
-            'csrf' => $csrf,
-        ]);
+        return header("Location: /login");
     }
 }

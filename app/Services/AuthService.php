@@ -2,14 +2,18 @@
 
 namespace App\Services;
 
+use Phpass\Hash;
 use App\Models\User;
-use Valitron\Validator;
 use App\Traits\Tocken;
+use Valitron\Validator;
+use Phpass\Hash\Adapter\Pbkdf2;
 use Josantonius\Session\Session;
 use App\Interfaces\AuthInterface;
-use Phpass\Hash;
-use Phpass\Hash\Adapter\Pbkdf2;
 
+/**
+ * Class AuthService
+ * @package App\Services
+ */
 class AuthService implements AuthInterface
 {
     use Tocken;
@@ -43,24 +47,18 @@ class AuthService implements AuthInterface
         $password = $_POST['password'];
 
         // check if user already exists
-        $user = User::where('email', $_POST['email'])->first();
+        $user = User::where('email', $email)->first();
         if ($user) {
             echo json_encode(['email' => 'Email already exists.']);
             return;
         }
 
-        // hash password
-        $adapter = new Pbkdf2(array (
-            'iterationCount' => 15000
-        ));
-        $phpassHash = new Hash($adapter);
-        $passwordHash = $phpassHash->hashPassword($_POST['password']);
-
+        // save a new user
         $user = new User();
-        $user->email = $_POST['email'];
-        $user->password = $passwordHash;
-        $user->key = rand(100000,999999);
-        $user->registered_at = date('Y-m-d');
+        $user->email = $email;
+        $user->password = $this->hashUserPassword($password);
+        $user->key = $this->generateRandomKeyForUser();
+        $user->registered_at = $this->setDateUserRegistration();
 
         $user->save();
 
@@ -73,7 +71,6 @@ class AuthService implements AuthInterface
             'tocken' => $tocken,
             'auth_user_id' => $user_id,
         ]);
-
 	}
 
     public function loginUser()
@@ -135,5 +132,47 @@ class AuthService implements AuthInterface
             Session::set('error_login', 'Wrong credentials');
             return header("Location: /login");
         }
+    }
+
+    public function emailHasBeenConfirmedMakeUserActive()
+    {
+        $user = User::find(Session::get('auth_user_id'));
+        if ($user) {
+            $user->is_active = true;
+            $user->save();
+
+            Session::set('email_confirmed_successfully', 'Email has been confirmed successfully.');
+            return header("Location: /home_page");
+        }
+
+        Session::set('email_confirmed_failed', 'Email confirmation failed.');
+        return header("Location: /home_page");
+    }
+
+    /**
+     * @param $password
+     * @return string
+     */
+    public function hashUserPassword($password): string
+    {
+        $adapter = new Pbkdf2(array (
+            'iterationCount' => 15000
+        ));
+        $phpassHash = new Hash($adapter);
+        return $phpassHash->hashPassword($password);
+    }
+
+    /**
+     * @return number
+     */
+    public function generateRandomKeyForUser(): int
+    {
+        return rand(100000,999999);
+    }
+
+
+    public function setDateUserRegistration()
+    {
+        return date('Y-m-d');
     }
 }

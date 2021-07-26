@@ -2,25 +2,44 @@
 
 namespace App\Controllers;
 
-use Josantonius\Session\Session;
-use Gregwar\Captcha\CaptchaBuilder;
-use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
+use Josantonius\Session\Session;
+use Twig\Loader\FilesystemLoader;
+use Gregwar\Captcha\CaptchaBuilder;
 
+/**
+ * Class Controller
+ * @package App\Controllers
+ */
 class Controller
 {
+    /**
+     * @var Environment
+     */
     protected $twig;
 
+    /**
+     * @var CaptchaBuilder
+     */
     protected $captcha;
 
+    /**
+     * session
+     */
     protected $session;
 
+    /**
+     * Controller constructor.
+     */
     public function __construct() {
         $this->sessionStart();
     	$this->twig = $this->twigTemplate();
     	$this->captcha = $this->createCaptcha();
     }
 
+    /**
+     * @return Environment
+     */
     public function twigTemplate()
     {
     	if (APP_ENV == 'prod') {
@@ -41,11 +60,17 @@ class Controller
     	return $twig;
     }
 
+    /**
+     * @return CaptchaBuilder
+     */
    	public function createCaptcha()
    	{
         return (new CaptchaBuilder)->build();
    	}
 
+    /**
+     * Start session for 1 hour
+     */
     public function sessionStart(): void
     {
         Session::init(3600);

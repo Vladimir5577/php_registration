@@ -4,8 +4,8 @@ namespace App\Controllers;
 
 use App\Models\User;
 use App\Traits\Tocken;
-use Josantonius\Session\Session;
 use App\Services\UserService;
+use Josantonius\Session\Session;
 
 /**
  * Class UserController
@@ -15,24 +15,28 @@ class UserController extends Controller
 {
 	use Tocken;
 
+	public function index()
+	{	
+		return $this->homePage();
+	}
+
 	public function homePage()
 	{
-		// dd(Session::id());
-
 		$auth_user_id = Session::get('auth_user_id');
 		$user = User::find($auth_user_id);
-		// dd($user);
 
 		if ($user) {
 			echo $this->twig->render('pages/users/user_home.html.twig', [
 				'user' => $user,
 				'update_success' => Session::pull('update_success'),
+				'email_confirmed_failed' => Session::pull('email_confirmed_failed'),
+				'email_confirmed_successfully' => Session::pull('email_confirmed_successfully'),
 			]);
 
 			return;  
 		}
 
-		 return header("Location: /register");
+		return header("Location: /register");
 	}
 
 	public function editProfile()
@@ -65,55 +69,41 @@ class UserController extends Controller
             Session::set('error_csrf', '419 Page has been expired! Please refresh the page!');
 	    	return header("Location: /edit_profile");
         } 
-	    
-	    $allowed_image_extension = array("png", "jpg","jpeg");
-	    
-	    // Get image file extension
-	    $file_extension = pathinfo($_FILES["file-input"]["name"], PATHINFO_EXTENSION);
-	    
-	    // Validate file input to check if is not empty
-	    if (! file_exists($_FILES["file-input"]["tmp_name"])) {
-	    	Session::set('error_image', 'Choose an image file.');
-	    	return header("Location: /edit_profile");
-	    }    
-
-	    // Validate file input to check if is with valid extension
-	    if (! in_array($file_extension, $allowed_image_extension)) {
-	    	Session::set('error_image', 'Image file not valid. Only JPEG, JPG, PNG format are allowed.');
-	    	return header("Location: /edit_profile");
-	    }   
-
-	     // Validate image file size
-	    if (($_FILES["file-input"]["size"] > 2000000)) {
-	    	Session::set('error_image', 'Image size exceeds 2MB');
-	        return header("Location: /edit_profile");
-	    }
-
-	    // validate name field
-	    if (!$_POST['name']) {
-	    	Session::set('error_name', 'Name is requered!');
-	        return header("Location: /edit_profile");
-	    }
-	    
-    	// save image
-        $target = 'uploads/images/' . basename($_FILES["file-input"]["name"]);
-        if (move_uploaded_file($_FILES["file-input"]["tmp_name"], $target)) {
-        	// image upload success
-        	
-        	$user = User::find(Session::get('auth_user_id'));
-
-        	$user->name = $_POST['name'];
-        	$user->photo = $_FILES["file-input"]["name"];
-        	$user->save();
-
-        	Session::set('update_success', 'Profile updated successfully.');
-	        return header("Location: /home_page");
-        } else {
-            // image upload failed
-            Session::set('update_failed', 'Profile not updated');
-	        return header("Location: /edit_profile");
-        }
-
-		dd('Finish');
+	   
+	   (new UserService)->validateUserForm();
 	}
+
+	public function getUsers()
+    {
+    	$auth_user_id = Session::get('auth_user_id');
+
+    	if ($auth_user_id) {
+    		$users = User::whereIsActive(true)->orderBy('name', 'asc')->get();
+
+	    	echo $this->twig->render('pages/users/users_wiev.html.twig', [
+				'users' => $users,
+			]);
+			return;
+    	}
+
+    	return header("Location: /register");
+    }
+
+    public function getUsersBySort()
+    {
+    	$auth_user_id = Session::get('auth_user_id');
+
+    	if ($auth_user_id) {
+
+			$userService = new UserService;
+			$users = $userService->getSortedUsers($_POST);
+
+	    	echo $this->twig->render('pages/users/users_wiev.html.twig', [
+				'users' => $users,
+			]);
+			return;
+    	}
+
+    	return header("Location: /register");
+    }
 }
