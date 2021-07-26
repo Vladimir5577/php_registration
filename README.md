@@ -24,7 +24,7 @@ Run user seeder
 php database/seeds/UserSeeder.php
 ```
 
-Run project locally:
+Run project locally - go to public folder:
 
 ```bash
 cd public/
