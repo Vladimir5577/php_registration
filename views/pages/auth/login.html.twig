@@ -1,0 +1,39 @@
+{% extends 'layouts/main.html.twig' %}
+
+{% block body %}
+
+{% if error_csrf %}
+    <h1 style="color: red;">{{ error_csrf }}</h1>
+{% endif %}
+
+<h1>Login Page</h1>
+
+{% if error_login %}
+    <h3 style="color: red;">{{ error_login }}</h3>
+{% endif %}
+
+<form action="/login_submit" method="POST">
+	<input type="hidden" id="csrf" name="csrf" value="{{ csrf }}">
+
+	<div class="mb-3">
+		<label for="email" class="form-label">Email address</label>
+		<input type="text" name="email" class="form-control" value="{{ email }}">
+		{% if error_email %}
+			<p style="color: red;">{{ error_email }}</p>
+		{% endif %}
+	</div>
+
+	<div class="mb-3">
+		<label for="password" class="form-label">Password</label>
+		<input type="password" name="password" class="form-control">
+		{% if error_password %}
+			<p style="color: red;">{{ error_password }}</p>
+		{% endif %}
+	</div>
+	
+	<br>
+	<button type="submit" class="btn btn-primary" id="form_register">Submit</button>
+</form>
+
+
+{% endblock %}

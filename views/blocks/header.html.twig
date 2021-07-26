@@ -1,0 +1,25 @@
+<div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+  <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+    <span class="fs-4">PHP registration</span>
+  </a>
+
+  <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+    {% if not session.jst_auth_user_id %}
+      <a class="py-2 text-dark text-decoration-none" href="/login">
+        <button type="button" class="btn btn-primary">Login</button>
+      </a>
+      &nbsp;&nbsp;
+      <a class="py-2 text-dark text-decoration-none" href="/register">
+        <button type="button" class="btn btn-success">Register</button>
+      </a>
+    {% else %}
+      <a class="py-2 text-dark text-decoration-none" href="/get_users">
+        <button type="button" class="btn btn-warning">See all usres</button>
+      </a>
+      &nbsp;&nbsp;
+      <a class="py-2 text-dark text-decoration-none" href="/logout">
+        <button type="button" class="btn btn-danger">Logout</button>
+      </a>
+    {% endif %}
+  </nav>
+</div>

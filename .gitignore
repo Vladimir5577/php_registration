@@ -1,0 +1,14 @@
+/vendor/
+/var/
+/public/captcha.jpg
+public/captcha.jpg
+/node_modules/
+.env
+/.idea/
+
+/public/uploads/images/*
+!/public/uploads/images/ava_1.png
+!/public/uploads/images/ava_2.jpeg
+!/public/uploads/images/ava_3.png
+!/public/uploads/images/ava_4.png
+!/public/uploads/images/ava_default.jpeg

@@ -1,0 +1,42 @@
+{% extends 'layouts/main.html.twig' %}
+
+{% block body %}
+
+<h1>Code verification.</h1>
+
+{% if email_sended_success %}
+	<h5 style="color: green;">{{ email_sended_success }}</h5>
+{% endif %}
+
+{% if email_sended_failed %}
+	<h5 style="color: red;">{{ email_sended_failed }}</h5>
+{% endif %}
+
+{% if error_csrf %}
+	<h2 style="color: red;">{{ error_csrf }}</h2>
+{% endif %}
+
+{% if email_confirmed_failed %}
+    <h1 style="color: red;">{{ email_confirmed_failed }}</h1>
+{% endif %}
+
+<form action="/code_verify" method="POST">
+	<input type="hidden" id="csrf" name="csrf" value="{{ csrf }}">
+
+	<div class="mb-3">
+		<label for="code_verification" class="form-label">Code verification</label>
+		<input type="text" name="code_verification" class="form-control">
+	</div>
+	
+	<br>
+	<button type="submit" class="btn btn-primary" id="form_register">Submit</button>
+</form>
+
+<br>
+<p>Do not receive an email ?</p>
+<a href="/send_email">
+    <button type="button" class="btn btn-danger">Send code again.</button>
+</a>
+
+
+{% endblock %}

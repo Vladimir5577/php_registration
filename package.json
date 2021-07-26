@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
+  "name": "php_registration",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vladimir5577/php_registration.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vladimir5577/php_registration/issues"
+  },
+  "homepage": "https://github.com/Vladimir5577/php_registration#readme"
+}

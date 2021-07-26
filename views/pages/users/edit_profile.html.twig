@@ -1,0 +1,54 @@
+{% extends 'layouts/main.html.twig' %}
+
+{% block body %}
+
+{% if error_csrf %}
+    <h1 style="color: red;">{{ error_csrf }}</h1>
+{% endif %}
+
+
+{% if update_failed %}
+    <h1 style="color: red;">{{ update_failed }}</h1>
+{% endif %}
+
+{% if update_success %}
+    <h1 style="color: green;">{{ update_success }}</h1>
+{% endif %}
+
+<form action="/save_user_data" method="POST" enctype="multipart/form-data">
+
+    <img id="preimage" src="" height="120px" >
+    <input type="hidden" id="csrf" name="csrf" value="{{ csrf }}">
+
+    <div class="mb-3">
+        <label for="photo" class="form-label">Photo</label>
+        <input type="file" name="file-input" class="form-control" onchange="loadfile(event)">
+        {% if error_image %}
+          <p style="color: red;">{{ error_image }}</p>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" name="name" class="form-control" value="{{ user.name }}">
+        {% if error_name %}
+            <p style="color: red;">{{ error_name }}</p>
+        {% endif %}
+    </div>
+
+    <br>
+
+    <input type="submit" name="submit" value="Submit" class="btn btn-primary"> 
+
+</form>
+
+<!-- image preview -->
+<script type="text/javascript">
+    function loadfile(event) {
+        var output=document.getElementById('preimage');
+        output.src=URL.createObjectURL(event.target.files[0]);
+    };
+</script>
+
+
+{% endblock %}
