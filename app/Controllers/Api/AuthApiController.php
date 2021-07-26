@@ -5,12 +5,15 @@ namespace App\Controllers\Api;
 use Phpass\Hash;
 use App\Models\User;
 use App\Traits\Tocken;
-use App\Services\AuthService;
 use App\Controllers\Controller;
 use Phpass\Hash\Adapter\Pbkdf2;
 use Josantonius\Session\Session;
 use Spatie\ArrayToXml\ArrayToXml;
 
+/**
+ * Class AuthApiController
+ * @package App\Controllers\Api
+ */
 class AuthApiController extends Controller
 {
 	use Tocken;

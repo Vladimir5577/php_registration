@@ -51,11 +51,7 @@ class Controller
     	}
 
     	$loader = new FilesystemLoader(APP_ROOT . '/views');
-		$twig = new Environment($loader, 
-		    [
-		   		'cache' => $cache,
-			]
-		);
+		$twig = new Environment($loader, ['cache' => $cache]);
         $twig->addGlobal('session', $_SESSION);
     	return $twig;
     }

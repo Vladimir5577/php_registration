@@ -34,11 +34,6 @@ class AuthController extends Controller
 
     public function formRegister()
     {
-        // header('Access-Control-Allow-Origin: *');
-        // header('Access-Control-Allow-Methods: GET, POST');
-        // header("Access-Control-Allow-Headers: *");
-        // header('Access-Control-Allow-Credentials: true');
-
         if (!$this->validateTocken($_POST['csrf'])) {
             echo json_encode(['csrf' => 'Page has been expired!']);
             return;
