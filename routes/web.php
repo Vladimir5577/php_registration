@@ -59,3 +59,6 @@ $routes->add('api/login', new Route('/api/login', array('controller' => 'Api\Aut
 
 // api get users
 $routes->add('api/get_users', new Route('/api/get_users', array('controller' => 'Api\AuthApiController', 'method' => 'getUsers')));
+
+// api xml get users
+$routes->add('api/get_users_xml', new Route('/api/get_users_xml', array('controller' => 'Api\AuthApiController', 'method' => 'getUsersXml')));

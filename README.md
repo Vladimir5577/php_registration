@@ -26,5 +26,9 @@ Get users data with jwt
 
 /api/get_users
 
+Get users in xml
+
+/api/get_users_xml
+
 
 
