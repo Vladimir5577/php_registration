@@ -11,6 +11,9 @@ use Josantonius\Session\Session;
  */
 class UserService
 {
+    /**
+     * Validate user form (image, name)
+     */
 	public function validateUserForm()
 	{
 	    $allowed_image_extension = array("png", "jpg","jpeg");
@@ -54,6 +57,9 @@ class UserService
         }
 	}
 
+    /**
+     * Save valid user data
+     */
 	public function saveValidUserData()
 	{
 		$user = User::find(Session::get('auth_user_id'));
@@ -66,6 +72,12 @@ class UserService
         return header("Location: /home_page");
 	}
 
+    /**
+     * Sorting users by name or email
+     *
+     * @param $sort
+     * @return mixed
+     */
 	public function getSortedUsers($sort)
 	{
 		switch ($_POST['order_by']) {

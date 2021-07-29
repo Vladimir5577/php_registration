@@ -18,11 +18,19 @@ class AuthService implements AuthInterface
 {
     use Tocken;
 
+    /**
+     * @return mixed|void
+     */
     public function saveUserToDatabase()
     {
         $this->validateRegisterForm();
     }
 
+    /**
+     * Validate register form
+     *
+     * @return mixed|void
+     */
 	public function validateRegisterForm()
 	{
 		$_POST['captcha_session'] = Session::get('captcha');
@@ -41,6 +49,11 @@ class AuthService implements AuthInterface
         }
 	}
 
+    /**
+     * Save vadid user data
+     *
+     * @return mixed|void
+     */
 	public function saveValidUserData()
 	{
         $email = $_POST['email'];
@@ -73,11 +86,21 @@ class AuthService implements AuthInterface
         ]);
 	}
 
+    /**
+     * Login
+     *
+     * @return mixed|void
+     */
     public function loginUser()
     {
         $this->validateLoginForm();
     }
 
+    /**
+     * Validate login form
+     *
+     * @return mixed|void
+     */
     public function validateLoginForm()
     {
         $email = $_POST['email'];
@@ -108,6 +131,13 @@ class AuthService implements AuthInterface
         }
     }
 
+    /**
+     * Login after validation
+     *
+     * @param $email
+     * @param $password
+     * @return mixed|void
+     */
     public function tryLoginWithValidUserCredentials($email, $password)
     {
         $user = User::whereEmail($email)->first();
@@ -134,6 +164,9 @@ class AuthService implements AuthInterface
         }
     }
 
+    /**
+     * Make user active after email confirmation
+     */
     public function emailHasBeenConfirmedMakeUserActive()
     {
         $user = User::find(Session::get('auth_user_id'));
@@ -150,6 +183,8 @@ class AuthService implements AuthInterface
     }
 
     /**
+     * Hashing password
+     *
      * @param $password
      * @return string
      */
@@ -163,6 +198,8 @@ class AuthService implements AuthInterface
     }
 
     /**
+     * Generate unique key for user
+     *
      * @return number
      */
     public function generateRandomKeyForUser(): int
@@ -170,7 +207,11 @@ class AuthService implements AuthInterface
         return rand(100000,999999);
     }
 
-
+    /**
+     * Get data registration
+     *
+     * @return false|string
+     */
     public function setDateUserRegistration()
     {
         return date('Y-m-d');

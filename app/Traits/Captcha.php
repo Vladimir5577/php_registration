@@ -10,6 +10,9 @@ use Josantonius\Session\Session;
  */
 trait Captcha {
 
+    /**
+     * Initiate new captcha and save to file and session
+     */
 	public function saveNevCaptchaToFileAndSession(): void
 	{
         $this->captcha->save('captcha.jpg');

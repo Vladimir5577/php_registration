@@ -15,11 +15,21 @@ class UserController extends Controller
 {
 	use Tocken;
 
+    /**
+     * Start page
+     */
 	public function index()
 	{	
 		return $this->homePage();
 	}
 
+    /**
+     * Home page
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
 	public function homePage()
 	{
 		$auth_user_id = Session::get('auth_user_id');
@@ -39,6 +49,13 @@ class UserController extends Controller
 		return header("Location: /register");
 	}
 
+    /**
+     * Edit profile page
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
 	public function editProfile()
 	{
 		$user = User::find(Session::get('auth_user_id'));
@@ -57,11 +74,13 @@ class UserController extends Controller
 			]);
 			return;
 		}
-		
 
 		return header("Location: /register");
 	}
 
+    /**
+     * Save user data
+     */
 	public function saveUserData()
 	{
 		// validate csrf
@@ -73,6 +92,13 @@ class UserController extends Controller
 	   (new UserService)->validateUserForm();
 	}
 
+    /**
+     * Get all users
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
 	public function getUsers()
     {
     	$auth_user_id = Session::get('auth_user_id');
@@ -89,6 +115,13 @@ class UserController extends Controller
     	return header("Location: /register");
     }
 
+    /**
+     * Get users by sort (name, email)
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function getUsersBySort()
     {
     	$auth_user_id = Session::get('auth_user_id');

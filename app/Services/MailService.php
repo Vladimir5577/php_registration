@@ -13,6 +13,9 @@ use PHPMailer\PHPMailer\Exception;
  */
 class MailService
 {
+    /**
+     * Send email verification
+     */
 	public function sendEmailVerification()
 	{
 		$auth_user_id = Session::get('auth_user_id');
@@ -23,6 +26,12 @@ class MailService
 		}
 	}
 
+    /**
+     * Send email with gmail smtp
+     *
+     * @param $user
+     * @throws Exception
+     */
 	public function dispatchEmailIfUserAuth($user)
 	{
 		$code_verification = rand(1000, 9999);

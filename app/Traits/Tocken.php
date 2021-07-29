@@ -14,6 +14,8 @@ trait Tocken {
 	private static $ISSUER = 'localhost';
 
     /**
+     * Generate new token and with lifetime 1 hour
+     *
      * @param $userId
      * @return string
      */
@@ -25,6 +27,8 @@ trait Tocken {
 	}
 
     /**
+     * Token validation
+     *
      * @param $tocken
      * @return bool
      */

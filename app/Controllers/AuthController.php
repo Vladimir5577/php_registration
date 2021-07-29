@@ -17,6 +17,8 @@ class AuthController extends Controller
     use Tocken, Captcha;
 
     /**
+     * Form registration
+     *
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
@@ -32,6 +34,9 @@ class AuthController extends Controller
         ]);
 	}
 
+    /**
+     * Submitting the form registration
+     */
     public function formRegister()
     {
         if (!$this->validateTocken($_POST['csrf'])) {
@@ -44,6 +49,8 @@ class AuthController extends Controller
     }
 
     /**
+     * Login Page
+     *
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
@@ -62,6 +69,9 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Login action
+     */
     public function loginSubmit()
     {
         // validate csrf
@@ -74,6 +84,9 @@ class AuthController extends Controller
         $auhtService->loginUser();
     }
 
+    /**
+     * Reset captcha (cahnge picture and assegn new code)
+     */
     public function resetCaptcha()
     {
         $this->saveNevCaptchaToFileAndSession();
@@ -81,6 +94,13 @@ class AuthController extends Controller
         echo $this->captcha->inline();
     }
 
+    /**
+     * Email confirmation page
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function confirmEmail()
     {
         $csrf = $this->generateTocken('confirm_email');
@@ -93,12 +113,18 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Action to send email
+     */
     public function sendEmail()
     {
         $mailService = new MailService;
         $mailService->sendEmailVerification();
     }
 
+    /**
+     * Email verification code
+     */
     public function codeVerify()
     {
         // validate csrf
@@ -118,6 +144,9 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Logout
+     */
     public function logout()
     {
         Session::destroy();
