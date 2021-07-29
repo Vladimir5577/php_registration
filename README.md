@@ -24,7 +24,7 @@ Run user seeder
 php database/seeds/UserSeeder.php
 ```
 
-Run project locally:
+Run project locally - go to public folder:
 
 ```bash
 cd public/
@@ -38,7 +38,7 @@ localhost:8000
 
 ## Work with api
 
-In postman login with post request with email and password
+In postman login with email and password - post request
 
 ```bash
 /api/login
@@ -46,13 +46,14 @@ In postman login with post request with email and password
 
 it will return token.
 
-Get users data with jwt
+Get json users data with jwt - get request
+add given jwt from login
 
 ```bash
 /api/get_users
 ```
 
-Get users in xml
+Get users in xml - get request
 
 ```bash
 /api/get_users_xml

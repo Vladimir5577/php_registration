@@ -20,7 +20,7 @@ email.addEventListener('input', (event) => {
     bodyFormData.append('password', '');
     bodyFormData.append('csrf', csrfValue);
 
-    axios.post('http://localhost:8000/form_submit', bodyFormData)
+    axios.post('/form_submit', bodyFormData)
     .then(function (response) {
         console.log((response.data.email), '-----------');
         if (response.data.email) {
@@ -47,7 +47,7 @@ password.addEventListener('input', (event) => {
     bodyFormData.append('password', event.target.value);
     bodyFormData.append('csrf', csrfValue);
 
-    axios.post('http://localhost:8000/form_submit', bodyFormData)
+    axios.post('/form_submit', bodyFormData)
     .then(function (response) {
         console.log((response.data.password), '-----------');
         if (response.data.password) {
@@ -85,7 +85,7 @@ document.getElementById("form_register").addEventListener("click", (event) => {
 });
 
 function axiosPost (bodyFormData) {
-    axios.post('http://localhost:8000/form_submit', bodyFormData)
+    axios.post('/form_submit', bodyFormData)
     .then(function (response) {
         if (response.data.csrf) {
             alert('419 Page has been expired. Please refresh the page.');
@@ -122,7 +122,7 @@ function axiosPost (bodyFormData) {
         if (response.data.auth == true) {
             localStorage.setItem('tocken', response.data.tocken);
             localStorage.setItem('auth_user_id', response.data.auth_user_id);
-            window.location.href = "http://localhost:8000/home_page";
+            window.location.href = "/home_page";
         }
 
     })
@@ -135,7 +135,7 @@ change_captcha_button.addEventListener('click', function (event) {
     event.preventDefault();
     console.log(2234234);
 
-    axios.get('http://localhost:8000/reset_captcha')
+    axios.get('/reset_captcha')
     .then(function (response) {
         console.log(response);
         captcha_image.src = response.data;
