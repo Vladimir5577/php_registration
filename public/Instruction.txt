@@ -1,0 +1,30 @@
+// simple mvc
+https://www.giuseppemaccario.com/how-to-build-a-simple-php-mvc-framework/
+
+
+// install eloquent
+https://www.cloudways.com/blog/eloquent-illuminate-in-php-without-laravel/
+
+
+// twig -??
+https://www.sitepoint.com/twig-popular-stand-alone-php-template-engine/
+
+// session
+https://github.com/Josantonius/PHP-Session
+
+// capcha
+https://github.com/Gregwar/Captcha
+
+
+// validation
+https://github.com/vlucas/valitron
+
+// jwt
+https://github.com/RobDWaller/ReallySimpleJWT
+
+
+// password hash
+https://github.com/rchouinard/phpass
+
+// asset
+https://symfony.com/doc/current/components/asset.html
