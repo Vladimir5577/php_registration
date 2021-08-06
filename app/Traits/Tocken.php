@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use ReallySimpleJWT\Token;
+use Josantonius\Session\Session;
 
 /**
  * Trait Tocken
@@ -40,4 +41,29 @@ trait Tocken {
         	return false;
         }
 	}
+
+	public function generateCsrfAndSaveToSession(int $strLength): string
+    {
+        $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        $input_length = strlen($permitted_chars);
+        $random_string = '';
+        for($i = 0; $i < $strLength; $i++) {
+            $random_character = $permitted_chars[mt_rand(0, $input_length - 1)];
+            $random_string .= $random_character;
+        }
+
+        Session::set('csrf', $random_string);
+
+        return $random_string;
+    }
+
+    public function validateCsrf(string $csrf): bool
+    {
+        if (Session::get('csrf') == $csrf) {
+            return true;
+        }
+
+        return false;
+    }
 }

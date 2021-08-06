@@ -25,7 +25,7 @@ class AuthController extends Controller
      */
 	public function getForm()
 	{
-        $csrf = $this->generateTocken('new_user');
+        $csrf = $this->generateCsrfAndSaveToSession(30);
         $this->saveNevCaptchaToFileAndSession();
 
         echo $this->twig->render('pages/auth/register.html.twig', [
@@ -39,10 +39,17 @@ class AuthController extends Controller
      */
     public function formRegister()
     {
-        if (!$this->validateTocken($_POST['csrf'])) {
+        if (!$this->validateCsrf($_POST['csrf'])) {
             echo json_encode(['csrf' => 'Page has been expired!']);
             return;
-        } 
+        }
+
+//        dd($this->validateCsrf($_POST['csrf']));
+
+//        if (!$this->validateTocken($_POST['csrf'])) {
+//            echo json_encode(['csrf' => 'Page has been expired!']);
+//            return;
+//        }
 
         $auhtService = new AuthService;
         $auhtService->saveUserToDatabase();
@@ -85,7 +92,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Reset captcha (cahnge picture and assegn new code)
+     * Reset captcha (change picture and assign a new code)
      */
     public function resetCaptcha()
     {
