@@ -19,7 +19,8 @@
         "symfony/asset": "^5.3",
       "ext-json": "*",
         "phpmailer/phpmailer": "^6.5",
-        "spatie/array-to-xml": "^2.16"
+        "spatie/array-to-xml": "^2.16",
+        "php-di/php-di": "^6.3"
     },
     "require-dev": {
         "symfony/var-dumper": "^5.3"

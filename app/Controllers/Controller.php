@@ -31,10 +31,10 @@ class Controller
     /**
      * Controller constructor.
      */
-    public function __construct() {
+    public function __construct(CaptchaBuilder $captchaBuilder) {
         $this->sessionStart();
     	$this->twig = $this->twigTemplate();
-    	$this->captcha = $this->createCaptcha();
+    	$this->captcha = $captchaBuilder->build();
     }
 
     /**
@@ -55,14 +55,6 @@ class Controller
         $twig->addGlobal('session', $_SESSION);
     	return $twig;
     }
-
-    /**
-     * @return CaptchaBuilder
-     */
-   	public function createCaptcha()
-   	{
-        return (new CaptchaBuilder)->build();
-   	}
 
     /**
      * Start session for 1 hour

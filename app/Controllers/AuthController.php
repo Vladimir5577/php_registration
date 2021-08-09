@@ -7,6 +7,7 @@ use App\Traits\Captcha;
 use App\Services\AuthService;
 use App\Services\MailService;
 use Josantonius\Session\Session;
+use App\Interfaces\AuthInterface;
 
 /**
  * Class AuthController
@@ -23,7 +24,7 @@ class AuthController extends Controller
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-	public function getForm()
+	public function getForm(AuthInterface $authInterface)
 	{
         $csrf = $this->generateCsrfAndSaveToSession(30);
         $this->saveNevCaptchaToFileAndSession();
@@ -37,7 +38,7 @@ class AuthController extends Controller
     /**
      * Submitting the form registration
      */
-    public function formRegister()
+    public function formRegister(AuthInterface $authInterface)
     {
         if (!$this->validateCsrf($_POST['csrf'])) {
             echo json_encode(['csrf' => 'Page has been expired!']);
@@ -51,8 +52,8 @@ class AuthController extends Controller
 //            return;
 //        }
 
-        $auhtService = new AuthService;
-        $auhtService->saveUserToDatabase();
+        // $auhtService = new AuthService;
+        $authInterface->saveUserToDatabase();
     }
 
     /**
@@ -79,7 +80,7 @@ class AuthController extends Controller
     /**
      * Login action
      */
-    public function loginSubmit()
+    public function loginSubmit(AuthInterface $authInterface)
     {
         // validate csrf
         if (!$this->validateTocken($_POST['csrf'])) {
@@ -87,8 +88,7 @@ class AuthController extends Controller
             return header("Location: /login");
         }
 
-        $auhtService = new AuthService;
-        $auhtService->loginUser();
+        $authInterface->loginUser();
     }
 
     /**

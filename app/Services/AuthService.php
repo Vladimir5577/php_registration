@@ -216,4 +216,9 @@ class AuthService implements AuthInterface
     {
         return date('Y-m-d');
     }
+
+    public function test()
+    {
+        return 'Hello bla from infecter service';
+    }
 }

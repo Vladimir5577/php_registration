@@ -7,6 +7,9 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Exception\NoConfigurationException;
 
+// container for DI
+$container = require APP_ROOT . '/bootstrap/bootstrap.php';
+
 $context = new RequestContext();
 
 // Routing can match routes with incoming requests
@@ -22,12 +25,18 @@ try {
         }
     });
 
-    // https://github.com/gmaccario/simple-mvc-php-framework/issues/2
-    // Issue #2: Fix Non-static method ... should not be called statically
-    $className = '\\App\\Controllers\\' . $matcher['controller'];
-    $classInstance = new $className();
 
-    call_user_func_array(array($classInstance, $matcher['method']), array_slice($matcher, 2, -1));
+    // new call through DI
+    $container->call([
+        '\App\Controllers\\' . $matcher['controller'], 
+        $matcher['method']
+    ]);
+    
+    // old method without DI
+    // $className = '\\App\\Controllers\\' . $matcher['controller'];
+    // $classInstance = new $className();
+
+    // call_user_func_array(array($classInstance, $matcher['method']), array_slice($matcher, 2, -1));
 } catch (MethodNotAllowedException $e) {
     echo 'Route method is not allowed.';
 } catch (ResourceNotFoundException $e) {

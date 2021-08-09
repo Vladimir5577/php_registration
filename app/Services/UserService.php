@@ -4,12 +4,13 @@ namespace App\Services;
 
 use App\Models\User;
 use Josantonius\Session\Session;
+use App\Interfaces\UserInterface;
 
 /**
  * Class UserService
  * @package App\Services
  */
-class UserService
+class UserService implements UserInterface
 {
     /**
      * Validate user form (image, name)
@@ -106,5 +107,10 @@ class UserService
         }
 
         return $users;
+	}
+
+	public function getUsers()
+	{
+		return User::whereIsActive(true)->orderBy('name', 'asc')->get();
 	}
 }

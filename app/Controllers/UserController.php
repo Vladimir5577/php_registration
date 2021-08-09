@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Traits\Tocken;
 use App\Services\UserService;
 use Josantonius\Session\Session;
+use App\Interfaces\UserInterface;
 
 /**
  * Class UserController
@@ -81,15 +82,15 @@ class UserController extends Controller
     /**
      * Save user data
      */
-	public function saveUserData()
+	public function saveUserData(UserInterface $userInterface)
 	{
 		// validate csrf
 		if (!$this->validateTocken($_POST['csrf'])) {
             Session::set('error_csrf', '419 Page has been expired! Please refresh the page!');
 	    	return header("Location: /edit_profile");
         } 
-	   
-	   (new UserService)->validateUserForm();
+
+	   $userInterface->validateUserForm();
 	}
 
     /**
@@ -99,15 +100,12 @@ class UserController extends Controller
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-	public function getUsers()
+	public function getUsers(UserInterface $userInterface)
     {
-    	$auth_user_id = Session::get('auth_user_id');
-
-    	if ($auth_user_id) {
-    		$users = User::whereIsActive(true)->orderBy('name', 'asc')->get();
+    	if (Session::get('auth_user_id')) {
 
 	    	echo $this->twig->render('pages/users/users_wiev.html.twig', [
-				'users' => $users,
+				'users' => $userInterface->getUsers(),
 			]);
 			return;
     	}
