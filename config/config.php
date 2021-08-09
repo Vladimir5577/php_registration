@@ -1,5 +1,6 @@
 <?php
 
+use Josantonius\Session\Session;
 use Symfony\Component\Dotenv\Dotenv;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
@@ -37,3 +38,6 @@ $capsule->addConnection([
 ]);
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
+
+// Start session
+Session::init(3600);

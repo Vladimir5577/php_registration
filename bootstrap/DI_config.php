@@ -10,7 +10,6 @@ return [
     \App\Interfaces\AuthInterface::class => create(\App\Services\AuthService::class),
     \App\Interfaces\UserInterface::class => create(\App\Services\UserService::class),
 
-    // now working session not awailable yet
     Environment::class => function () {
     	if (APP_ENV == 'prod') {
             // save cache in production mode
