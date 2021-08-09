@@ -2,7 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Traits\Tocken;
 use Twig\Environment;
+use Josantonius\Session\Session;
 use Gregwar\Captcha\CaptchaBuilder;
 
 /**
@@ -11,6 +13,8 @@ use Gregwar\Captcha\CaptchaBuilder;
  */
 class Controller
 {
+    use Tocken;
+
     /**
      * @var Environment
      */
@@ -27,5 +31,14 @@ class Controller
     public function __construct(Environment $twigEnvironment, CaptchaBuilder $captchaBuilder) {
     	$this->twig = $twigEnvironment;
     	$this->captcha = $captchaBuilder->build();
+    }
+
+    public function checkUserAuth()
+    {
+        if (isset($_COOKIE['tocken']) && $this->validateTocken($_COOKIE['tocken'])) {
+            return true;
+        }
+
+        return false;
     }
 }

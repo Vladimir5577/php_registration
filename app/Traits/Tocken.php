@@ -20,7 +20,7 @@ trait Tocken {
      * @param $userId
      * @return string
      */
-	public function generateTocken($userId): string
+	public function generateTocken(int $userId): string
 	{
         $expiration = time() + 3600;
 
@@ -42,7 +42,7 @@ trait Tocken {
         }
 	}
 
-	public function generateCsrfAndSaveToSession(int $strLength): string
+	public function generateCsrfAndSaveToSession(int $strLength = 30): string
     {
         $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 

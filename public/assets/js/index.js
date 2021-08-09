@@ -122,6 +122,11 @@ function axiosPost (bodyFormData) {
         if (response.data.auth == true) {
             localStorage.setItem('tocken', response.data.tocken);
             localStorage.setItem('auth_user_id', response.data.auth_user_id);
+            var now = new Date();
+            var time = now.getTime();
+            var expireTime = time + 60*60*1000;
+            now.setTime(expireTime);
+            document.cookie = 'tocken=' + response.data.tocken + ';expires=' + now.toUTCString();
             window.location.href = "/home_page";
         }
 

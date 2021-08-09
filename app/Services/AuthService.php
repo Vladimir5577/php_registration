@@ -155,7 +155,8 @@ class AuthService implements AuthInterface
         if ($phpassHash->checkPassword($password, $user->password)) {
             // Password matches...
             Session::set('auth_user_id', $user->id);
-            $tocken = $this->generateTocken($user_id);
+            $tocken = $this->generateTocken($user->id);
+            setcookie('tocken', $tocken, time() + 3600);
             return header("Location: /home_page");
         } else {
             // wrong password

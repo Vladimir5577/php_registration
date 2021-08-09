@@ -21,6 +21,10 @@ class UserController extends Controller
      */
 	public function index()
 	{	
+		if (!$this->checkUserAuth()) {
+    		return header("Location: /login");
+    	}
+
 		return $this->homePage();
 	}
 
@@ -33,21 +37,23 @@ class UserController extends Controller
      */
 	public function homePage()
 	{
+		if (!$this->checkUserAuth()) {
+    		return header("Location: /login");
+    	}
+
 		$auth_user_id = Session::get('auth_user_id');
 		$user = User::find($auth_user_id);
 
-		if ($user) {
-			echo $this->twig->render('pages/users/user_home.html.twig', [
-				'user' => $user,
-				'update_success' => Session::pull('update_success'),
-				'email_confirmed_failed' => Session::pull('email_confirmed_failed'),
-				'email_confirmed_successfully' => Session::pull('email_confirmed_successfully'),
-			]);
-
-			return;  
+		if (!$user) {
+			return header("Location: /register");
 		}
 
-		return header("Location: /register");
+		echo $this->twig->render('pages/users/user_home.html.twig', [
+			'user' => $user,
+			'update_success' => Session::pull('update_success'),
+			'email_confirmed_failed' => Session::pull('email_confirmed_failed'),
+			'email_confirmed_successfully' => Session::pull('email_confirmed_successfully'),
+		]);
 	}
 
     /**
@@ -59,24 +65,25 @@ class UserController extends Controller
      */
 	public function editProfile()
 	{
+		if (!$this->checkUserAuth()) {
+    		return header("Location: /login");
+    	}
+
 		$user = User::find(Session::get('auth_user_id'));
 
-		$csrf = $this->generateTocken('user_form');
-
-		if ($user) {
-			echo $this->twig->render('pages/users/edit_profile.html.twig', [
-				'user' => $user,
-				'csrf' => $csrf,
-				'error_name' => Session::pull('error_name'),
-				'error_image' => Session::pull('error_image'),
-				'error_csrf' => Session::pull('error_csrf'),
-				'update_failed' => Session::pull('update_failed'),
-				'update_success' => Session::pull('update_success'),
-			]);
-			return;
+		if (!$user) {
+			return header("Location: /register");
 		}
 
-		return header("Location: /register");
+		echo $this->twig->render('pages/users/edit_profile.html.twig', [
+			'user' => $user,
+			'csrf' => $this->generateCsrfAndSaveToSession(),
+			'error_name' => Session::pull('error_name'),
+			'error_image' => Session::pull('error_image'),
+			'error_csrf' => Session::pull('error_csrf'),
+			'update_failed' => Session::pull('update_failed'),
+			'update_success' => Session::pull('update_success'),
+		]);
 	}
 
     /**
@@ -84,8 +91,12 @@ class UserController extends Controller
      */
 	public function saveUserData(UserInterface $userInterface)
 	{
+		if (!$this->checkUserAuth()) {
+    		return header("Location: /login");
+    	}
+
 		// validate csrf
-		if (!$this->validateTocken($_POST['csrf'])) {
+		if (!$this->validateCsrf($_POST['csrf'])) {
             Session::set('error_csrf', '419 Page has been expired! Please refresh the page!');
 	    	return header("Location: /edit_profile");
         } 
@@ -102,15 +113,13 @@ class UserController extends Controller
      */
 	public function getUsers(UserInterface $userInterface)
     {
-    	if (Session::get('auth_user_id')) {
-
-	    	echo $this->twig->render('pages/users/users_wiev.html.twig', [
-				'users' => $userInterface->getUsers(),
-			]);
-			return;
+    	if (!$this->checkUserAuth()) {
+    		return header("Location: /login");
     	}
 
-    	return header("Location: /register");
+    	echo $this->twig->render('pages/users/users_wiev.html.twig', [
+			'users' => $userInterface->getUsers(),
+		]);
     }
 
     /**
@@ -122,19 +131,15 @@ class UserController extends Controller
      */
     public function getUsersBySort()
     {
-    	$auth_user_id = Session::get('auth_user_id');
-
-    	if ($auth_user_id) {
-
-			$userService = new UserService;
-			$users = $userService->getSortedUsers($_POST);
-
-	    	echo $this->twig->render('pages/users/users_wiev.html.twig', [
-				'users' => $users,
-			]);
-			return;
+    	if (!$this->checkUserAuth()) {
+    		return header("Location: /login");
     	}
 
-    	return header("Location: /register");
+		$userService = new UserService;
+		$users = $userService->getSortedUsers($_POST);
+
+    	echo $this->twig->render('pages/users/users_wiev.html.twig', [
+			'users' => $users,
+		]);
     }
 }

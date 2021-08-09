@@ -65,10 +65,8 @@ class AuthController extends Controller
      */
     public function login()
     {
-        $csrf = $this->generateTocken('login');
-
         echo $this->twig->render('pages/auth/login.html.twig', [
-            'csrf' => $csrf,
+            'csrf' => $this->generateCsrfAndSaveToSession(),
             'email' => Session::pull('email'),
             'error_csrf' => Session::pull('error_csrf'),
             'error_login' => Session::pull('error_login'),
@@ -83,7 +81,7 @@ class AuthController extends Controller
     public function loginSubmit(AuthInterface $authInterface)
     {
         // validate csrf
-        if (!$this->validateTocken($_POST['csrf'])) {
+        if (!$this->validateCsrf($_POST['csrf'])) {
             Session::set('error_csrf', '419 Page has been expired! Please refresh the page!');
             return header("Location: /login");
         }
