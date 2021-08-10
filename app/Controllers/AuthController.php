@@ -45,14 +45,6 @@ class AuthController extends Controller
             return;
         }
 
-//        dd($this->validateCsrf($_POST['csrf']));
-
-//        if (!$this->validateTocken($_POST['csrf'])) {
-//            echo json_encode(['csrf' => 'Page has been expired!']);
-//            return;
-//        }
-
-        // $auhtService = new AuthService;
         $authInterface->saveUserToDatabase();
     }
 
@@ -108,10 +100,8 @@ class AuthController extends Controller
      */
     public function confirmEmail()
     {
-        $csrf = $this->generateTocken('confirm_email');
-
         echo $this->twig->render('pages/auth/code_verification.html.twig', [
-            'csrf' => $csrf,
+            'csrf' => $this->generateCsrfAndSaveToSession(),
             'error_csrf' => Session::pull('error_csrf'),
             'email_sended_success' => Session::pull('email_sended_success'),
             'email_confirmed_failed' => Session::pull('email_confirmed_failed'),
@@ -130,18 +120,17 @@ class AuthController extends Controller
     /**
      * Email verification code
      */
-    public function codeVerify()
+    public function codeVerify(AuthInterface $authInterface)
     {
         // validate csrf
-        if (!$this->validateTocken($_POST['csrf'])) {
+        if (!$this->validateCsrf($_POST['csrf'])) {
             Session::set('error_csrf', '419 Page has been expired! Please refresh the page!');
             return header("Location: /confirm_email");
         }
 
         if (Session::get('code_verification') == intval($_POST['code_verification'])) {
             // verification cod is correct
-            $auhtService = new AuthService;
-            $auhtService->emailHasBeenConfirmedMakeUserActive();
+            $authInterface->emailHasBeenConfirmedMakeUserActive();
         } else {
             // wrond cod 
             Session::set('email_confirmed_failed', 'Wrond code. Try again.');

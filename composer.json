@@ -6,6 +6,11 @@
             "App\\": "app/"
         }
     },
+    "scripts": {
+        "serve": "php -S localhost:8000 -t public/",
+        "migrate": "php database/migrations/user_migration.php",
+        "run:seeder": "php database/seeds/UserSeeder.php"
+    },
     "require": {
         "symfony/routing": "^4.4",
         "illuminate/database": "^8.49",

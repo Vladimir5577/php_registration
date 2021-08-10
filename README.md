@@ -15,20 +15,19 @@ cp .env.example .env
 Run migration user
 
 ```bash
-php database/migrations/user_migration.php
+composer migrate
 ```
 
 Run user seeder
 
 ```bash
-php database/seeds/UserSeeder.php
+composer run:seeder
 ```
 
-Run project locally - go to public folder:
+Run project locally:
 
 ```bash
-cd public/
-php -S localhost:8000
+composer serve
 ```
 Then type in the browser 
 
